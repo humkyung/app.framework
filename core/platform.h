@@ -45,6 +45,14 @@ math.h are only included if __STRICT_ANSI__
 is not defined.  Since GEOS is compiled with -ansi that
 means those definitions are not available. */
 #include <float.h>
+#elif linux
+	#if defined(_UNICODE)
+		#define	_T(x) L ##x
+		typedef	wchar_t	TCHAR
+	#else
+		#define	_T(x) x
+		typedef char	TCHAR
+	#endif
 #endif
 
 #include <limits> // for std::numeric_limits

@@ -2,9 +2,9 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+///#include "stdafx.h"
 #include <assert.h>
-#include "../app.framework/Tokenizer.h"
+#include <Tokenizer.h>
 #include <AcisLib.h>
 #include <AcisDoc.h>
 #include <AcisBody.h>
@@ -14,7 +14,7 @@ ACISLIB_IMPLEMENT_FUNC(AcisBody , AcisEntity , TYPELIST({_T("body") , NULL}))
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-/**	
+/**
 	@brief
 */
 AcisBody::AcisBody(const TCHAR* pType,const long& nIndex) : AcisEntity(pType,nIndex)
@@ -24,18 +24,18 @@ AcisBody::AcisBody(const TCHAR* pType,const long& nIndex) : AcisEntity(pType,nIn
 	m_lTransformIndex = -1;
 }
 
-/**	
+/**
 	@brief
 */
 AcisBody::~AcisBody()
 {
 }
 
-/**	
+/**
 	@brief	parse given string
 	@author	humkyung
 	@param	psz	a parameter of type const char*
-	@return	bool	
+	@return	bool
 */
 bool AcisBody::Parse(AcisDoc* pDoc,const TCHAR* psz)
 {
@@ -46,11 +46,11 @@ bool AcisBody::Parse(AcisDoc* pDoc,const TCHAR* psz)
 	{
 		vector<STRING_T> oResult;
 		CTokenizer<CIsFromString>::Tokenize(oResult , psz , CIsFromString(AcisLib::szDelimiter));
-		if(700 == pDoc->GetVer())	/// ACAD 2004	
-		{ 
+		if(700 == pDoc->GetVer())	/// ACAD 2004
+		{
 			//AcisEntity::tokenizer.GetNextToken(CSATEntity::szToken); /// expected "body"
 			//CSATEntity::tokenizer.GetNextToken(CSATEntity::szToken); // attribute
-			//CSATEntity::tokenizer.GetNextToken(CSATEntity::szToken); /// ??? 
+			//CSATEntity::tokenizer.GetNextToken(CSATEntity::szToken); /// ???
 			//CSATEntity::tokenizer.GetNextToken(CSATEntity::szToken); /// ???
 			m_lLumpIndex = ATOI_T(oResult[4].c_str() + 1); /// lump index(skip '$')
 		}
@@ -68,29 +68,29 @@ bool AcisBody::Parse(AcisDoc* pDoc,const TCHAR* psz)
 	return bRet;
 }
 
-/**	
+/**
 	@brief	The AcisBody::GetLumpIndex function
 	@author	humkyung
-	@return	long	
+	@return	long
 */
 long AcisBody::GetLumpIndex() const {return m_lLumpIndex;}
 
-/**	
+/**
 	@brief	return wire index
 	@date	2014.10.22
 	@author	humkyung
-	@return	long	
+	@return	long
 */
 long AcisBody::GetWireIndex() const
 {
 	return m_lWireIndex;
 }
 
-/**	
+/**
 	@brief	return transform index
 	@date	2014.10.22
 	@author	humkyung
-	@return	long	
+	@return	long
 */
 long AcisBody::GetTransformIndex() const
 {

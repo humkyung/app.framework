@@ -10,6 +10,11 @@
 #include "AcisEnum.h"
 using namespace std;
 
+#ifdef	linux
+	#define ON_EXT_CLASS
+	#define	ON_EXT_DECL
+	#define ON_EXTERN_DECL
+#else
 #ifdef ON_DLL_EXPORTS
 	#define ON_EXT_CLASS	__declspec(dllexport)
 	#define	ON_EXT_DECL	extern "C" __declspec(dllexport)
@@ -19,6 +24,7 @@ using namespace std;
 	#define	ON_EXT_DECL	extern "C" __declspec(dllexport)
 	#define ON_EXTERN_DECL	extern __declspec(dllimport)
 #endif
+#endif // linux
 
 #ifndef ON_DLL_EXPORTS
 #ifdef _WIN64

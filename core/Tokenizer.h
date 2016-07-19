@@ -3,7 +3,10 @@
 #pragma once
 
 #pragma warning(disable:4786)
+#ifdef linux
+#else
 #include <tchar.h>
+#endif
 #include <functional>
 #include <string>
 #include <vector>
@@ -30,10 +33,14 @@ public:
 inline bool CIsSpace::operator()(CHAR_T c) const
 {
 	//isspace<char> returns true if c is a white-space character (0x09-0x0D or 0x20)
-#if (_MSC_VER >= 1300) 
+#if linux
 	return isspace(c) ? true : false;
 #else
-	return isspace<_CHAR>(c) ? true : false;
+#if (_MSC_VER >= 1300)
+	return isspace(c) ? true : false;
+#else
+	return isspace<CHAR_T>(c) ? true : false;
+#endif
 #endif
 }
 
@@ -52,7 +59,7 @@ public:
 
 inline bool CIsComma::operator()(CHAR_T c) const
 {
-#ifdef	_UNICODE	
+#ifdef	_UNICODE
 	return ((_T(',') == c) ? true : false);
 #else
 	return ((',' == c) ? true : false);
@@ -64,7 +71,7 @@ class CIsFromString : public unary_function<CHAR_T, bool>
 {
 public:
 	//Constructor specifying the separators
-	CIsFromString::CIsFromString(STRING_T const& rostr) : m_ostr(rostr) {}
+	CIsFromString(STRING_T const& rostr) : m_ostr(rostr) {}
 	bool operator()(CHAR_T c) const;
 	STRING_T::const_iterator find(STRING_T::const_iterator& begin , STRING_T::const_iterator& end) const
 	{
@@ -72,7 +79,7 @@ public:
 		begin =  ((end != itr) ? (itr + 1) : (end));
 		return itr;
 	}
-	
+
 private:
 	STRING_T m_ostr;
 };
@@ -157,7 +164,7 @@ inline void CTokenizer<Pred>::Tokenize(vector<STRING_T>& roResult, STRING_T cons
 			roResult.push_back(STRING_T(itTokenStart, itTokenEnd));
 		else if(itTokenStart == itTokenEnd)
 			roResult.push_back(STRING_T(_T("")));
-		
+
 		if((rostr.end() == it) && (rostr.end() != itTokenEnd))
 		{
 			roResult.push_back(STRING_T(_T("")));
@@ -168,7 +175,7 @@ inline void CTokenizer<Pred>::Tokenize(vector<STRING_T>& roResult, STRING_T cons
 /**
  * 	author  : humkyung
  * 	purpose : 주어진 문자열을 delimiter로 분리한다.
- * 	date    : 2009-05-12 14:02:04 
+ * 	date    : 2009-05-12 14:02:04
 */
 inline void StringSplit( vector<STRING_T>& results , STRING_T str, const STRING_T& delim)
 {

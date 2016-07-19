@@ -9,10 +9,18 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#ifdef linux
+#else
 #include <tchar.h>
+#endif
 #include <limits>
 #include "BaseTools.h"
 
+#ifdef	linux
+	#define ON_EXT_CLASS
+	#define	ON_EXT_DECL
+	#define ON_EXTERN_DECL
+#else
 #ifdef ON_DLL_EXPORTS
 	#define ON_EXT_CLASS	__declspec(dllexport)
 	#define	ON_EXT_DECL	extern "C" __declspec(dllexport)
@@ -22,6 +30,7 @@
 	#define	ON_EXT_DECL	extern "C" __declspec(dllexport)
 	#define ON_EXTERN_DECL	extern __declspec(dllimport)
 #endif
+#endif // linux
 
 #define ON_DECLARE_FUNC(classname)\
 public:\
@@ -70,7 +79,7 @@ enum Intersect
 
 namespace AppFramework
 {
-class ON_EXT_CLASS CBaseEntity  
+class ON_EXT_CLASS CBaseEntity
 {
 public:
 	unsigned long GetUserData() const;
